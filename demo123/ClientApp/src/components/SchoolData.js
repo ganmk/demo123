@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import SchoolAddDailog from './SchoolAddDailog';
 
 
 export class SchoolData extends Component {
@@ -11,6 +12,7 @@ export class SchoolData extends Component {
         fetch('api/SchoolData/ShcoolList')
             .then(response => response.json())
             .then(data => {
+                console.log(data)
                 this.setState({ forecasts: data, loading: false });
             });
 
@@ -29,15 +31,29 @@ export class SchoolData extends Component {
                 </thead>
                 <tbody>
                     {forecasts.map(forecast =>
-                        <tr key={forecast.SchoolCode}>
-                            <td>{forecast.SchoolCode}</td>
-                            <td>{forecast.SchoolName}</td>
-                            <td>{forecast.SchoolType}</td>
-                            <td>{forecast.Remark}</td>
+                        <tr key={forecast.schoolCode}>
+                            <td>{forecast.schoolCode}</td>
+                            <td>{forecast.schoolName}</td>
+                            <td>{forecast.schoolType}</td>
+                            <td>{forecast.remark}</td>
                         </tr>
                     )}
                 </tbody>
             </table>
+        );
+    }
+
+    render() {
+        let contents = this.state.loading
+            ? <p><em>Loading...</em></p>
+            : SchoolData.renderForecastsTable(this.state.forecasts);
+
+        return (
+            <div>
+                <h1>school data</h1>
+                <SchoolAddDailog/>
+                {contents}
+            </div>
         );
     }
 

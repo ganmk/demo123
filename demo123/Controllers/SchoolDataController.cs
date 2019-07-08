@@ -20,14 +20,34 @@ namespace demo123.Controllers
             //不能把StudentManager变成静对象保证每次都NEW出来
             //cm.GetList();
             //cm.Delete(1);
-            return cm.GetList();
+            List<School> _list= cm.GetList();
+            return _list;
         }
 
-        public dynamic AddShcool(SchoolViewModel model)
+        [HttpPost("[action]")]
+        public dynamic AddShcool([FromBody]SchoolViewModel model)
         {
             var cm = new SchoolManager();
-            cm.Insert(model);
+            model.Id =Guid.NewGuid().ToString();
+            try
+            {
+                cm.Insert(model);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
             return Ok();
         }
+
+
+        public class test
+        {
+            public string SchoolCode { get; set; }
+            public string SchoolName { get; set; }
+            public int SchoolType { get; set; }
+            public string Remark { get; set; }
+        }
+
     }
 }

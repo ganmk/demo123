@@ -25,14 +25,14 @@ namespace demo123
                 InitKeyType = InitKeyType.Attribute
             });
 
-            try
-            {
-                Db.CodeFirst.BackupTable().InitTables(typeof(Student), typeof(School));
-            }
-            catch (Exception ex)
-            {
-                 throw ex;
-            }
+            //try
+            //{
+            //    Db.CodeFirst.BackupTable().InitTables(typeof(Student), typeof(School));
+            //}
+            //catch (Exception ex)
+            //{
+            //     throw ex;
+            //}
             //调式代码 用来打印SQL 
             //Db.Aop.OnLogExecuting = (sql, pars) =>
             //{
