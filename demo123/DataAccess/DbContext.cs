@@ -2,7 +2,9 @@
 using SqlSugar;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace demo123
@@ -10,8 +12,8 @@ namespace demo123
     public class DbContext<T> where T : class, new()
     {
         public SqlSugarClient Db;//用来处理事务多表查询和复杂的操作
-        public SimpleClient<Student> StudentDb { get { return new SimpleClient<Student>(Db); } }//用来处理Student表的常用操作
-        public SimpleClient<School> SchoolDb { get { return new SimpleClient<School>(Db); } }//用来处理School表的常用操作
+        //public SimpleClient<Student> StudentDb { get { return new SimpleClient<Student>(Db); } }//用来处理Student表的常用操作
+        //public SimpleClient<School> SchoolDb { get { return new SimpleClient<School>(Db); } }//用来处理School表的常用操作
 
         public SimpleClient<T> CurrentDb { get { return new SimpleClient<T>(Db); } }//用来处理T表的常用操作
 
@@ -43,9 +45,19 @@ namespace demo123
 
         }
 
+        public virtual List<ExpandoObject> GetMaxid(string table, string field, int pageIndex, int pageSize)
+        {
+            return Db.Queryable(table, field).ToPageList(pageIndex, pageSize);
+        }
+
         public virtual bool Insert(T obj)
         {
             return CurrentDb.Insert(obj);
+        }
+
+        public virtual List<T> GetPageList(Expression<Func<T, bool>> whereExpression, PageModel page)
+        {
+            return CurrentDb.GetPageList(whereExpression, page);
         }
 
         /// <summary>
@@ -55,6 +67,11 @@ namespace demo123
         public virtual List<T> GetList()
         {
             return CurrentDb.GetList();
+        }
+
+        public virtual List<T> GetList(Expression<Func<T, bool>> whereExpression)
+        {
+            return CurrentDb.GetList(whereExpression);
         }
 
         /// <summary>
