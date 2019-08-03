@@ -34,7 +34,12 @@ namespace demo123.Controllers
 
         }
 
-        
+        [HttpGet("[action]")]
+        public List<MenuTree> MenuTree()
+        {
+            var vm = new UserMenuManager();
+            return vm.GetTreeMenu();
+        }
 
 
         [HttpPost("[action]")]
